@@ -123,5 +123,29 @@ func main() {
 
 	// create and run consumer
 
+	for i := range pizzaJob.data {
+		if i.pizzaNumber <= NumberOfPizzas {
+			if i.success {
+				color.Green(i.message)
+				color.Green("Order #%d is ready for delivery!\n", i.pizzaNumber)
+			} else {
+				color.Red(i.message)
+				color.Red("Order #%d failed to be made.\n", i.pizzaNumber)
+			}
+		} else {
+			color.Cyan("All orders have been processed. Closing the pizzeria.")
+			err := pizzaJob.Close()
+			if err != nil {
+				color.Red("Error closing the pizzeria: %v", err)
+			}
+		}
+	}
+
 	//print out ending msg
+	color.Cyan("-----------------------------------")
+	color.Cyan("The Pizzeria is closed for business!")
+	color.Cyan("-----------------------------------")
+	color.Cyan("Total Orders: %d", total)
+	color.Green("Orders Made: %d", pizzasMade)
+	color.Red("Orders Failed: %d", pizzasFailed)
 }
